@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','starter.directives'])
+angular.module('starter', ['ionic','ngCordova', 'starter.controllers', 'starter.services','starter.directives'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -64,20 +64,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','s
         'tab-zhuanqu': {
           templateUrl: 'templates/tab-zhuanqu.html',
           controller: 'ZhuanquCtrl'
-        },
-          'zhuanqu-fenlei': {
-                  templateUrl: 'templates/zhuanqu-fenlei.html',
-                  controller: 'ZhuanquCtrl'
-              }
-
+        }
       }
     })
-    .state('tab.zhuanqu.fenlei', {
+    .state('tab.fenlei-detail', {
           url: '/zhuanqu/fenlei',
           views: {
-              'zhuanqu-fenlei': {
-                  templateUrl: 'templates/zhuanqu-fenlei.html',
-                  controller: 'ZhuanquCtrl'
+              'tab-zhuanqu': {
+                  templateUrl: 'templates/zhuanqu-fenlei-detail.html',
+                  controller: 'FenLeiDetailCtrl'
               }
           }
       })

@@ -1,7 +1,11 @@
 /* Empty. Add your own CSS if you like */
-.slider {
-  height: 200px;
+.app-slider {
+  height: 150px;
 }
 .list-item-like {
     margin-top: 40px;
+}
+.app-padding {
+    flex-flow: column;
+    padding: 6px;
 }
