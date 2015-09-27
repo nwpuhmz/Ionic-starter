@@ -1,0 +1,68 @@
+<ion-view view-title="" hide-tabs>
+    <ion-content >
+        <ion-refresher
+                pulling-text="松开立即刷新..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="app-slider">
+            <ion-slide-box on-slide-changed="slideHasChanged($index)">
+                <ion-slide>
+                    <img src="http://pic20.nipic.com/20120414/9502787_015323910000_2.jpg" class="full-image">
+                </ion-slide>
+                <ion-slide>
+                    <img src="http://pic20.nipic.com/20120414/9502787_015323910000_2.jpg" class="full-image">
+                </ion-slide>
+                <ion-slide>
+                    <img src="http://pic20.nipic.com/20120414/9502787_015323910000_2.jpg" class="full-image">
+                </ion-slide>
+            </ion-slide-box>
+        </div>
+
+        <div class="list">
+
+            <a class="item" >
+                <h3>巨无霸 施华洛世奇一吨</h3>
+            </a>
+            <a class="item" >
+
+            <h4> 保证金：￥500</h4>
+            <h4>加价幅度：￥300</h4>
+
+            </a>
+
+            <div class="item item-divider">
+                拍品参数
+            </div>
+            <a class="item">
+                <h3>【分类】: 玉石</h3>
+                <h3>【分类】: 玉石</h3>
+                <h3>【分类】: 玉石</h3>
+                <h3>【分类】: 玉石</h3>
+                <h3>【分类】: 玉石</h3>
+            </a>
+
+            <a class="item item-icon-right" ng-click="modal.show()">
+                <h3> 出价纪录</h3>
+                <i class="icon ion-ios-arrow-right"></i>
+            </a>
+
+
+        </div>
+        <div class="list">
+        <a class="item"><span>评论 10</span></a>
+            <a class="item item-avatar" href="#">
+                <img src="http://pic20.nipic.com/20120414/9502787_015323910000_2.jpg">
+                <h2>Venkman</h2>
+                <h3>2015-8-8</h3>
+                <p>Back off, man. I'm a scientist.</p>
+            </a>
+            <a class="item item-avatar" href="#">
+                <img src="http://pic20.nipic.com/20120414/9502787_015323910000_2.jpg">
+                <h2>Venkmanfdfddfdfdfdfdfdfdfdfdf</h2>
+                <p>2015-8-8</p>
+                <p>Back off, man. I'm a scientist.aaaaaaaaaaaaasdfdsfsafdasdfasfdsadfsafdsafdsafdsa</p>
+            </a>
+
+        </div>
+     </ion-content>
+</ion-view>
