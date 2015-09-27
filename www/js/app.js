@@ -5,10 +5,13 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
+//var AV = require('avoscloud-sdk');
 angular.module('starter', ['ionic','ngResource','ngCordova', 'starter.services','starter.controllers', 'starter.directives'])
 
     .run(function($ionicPlatform) {
+    AV.initialize('p9y5fh0mjtunp9hf77excmgc046kmwvx70rqplh5gmrw7gr4', 'djf0wfrsvdv2z2lxqbvpwrlivml83281q8b4gkj8w9z226rp');
         $ionicPlatform.ready(function() {
+
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {

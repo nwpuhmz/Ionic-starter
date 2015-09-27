@@ -106,7 +106,7 @@ angular.module('starter.controllers', [])
        });
     })
 
-    .controller('UploadProCtrl', function($scope,$cordovaImagePicker,$ionicActionSheet, $ionicLoading,$cordovaFileTransfer,$cordovaCamera,$rootScope,Product){
+    .controller('UploadProCtrl', function($scope,$cordovaImagePicker,$ionicActionSheet, $ionicLoading,$cordovaFileTransfer,$cordovaCamera,$rootScope,Product,$cordovaFile){
 
         console.log("UploadProCtrlCtrl");
         $scope.images_list = [];
@@ -122,11 +122,6 @@ angular.module('starter.controllers', [])
             old_price:0
         };
 
-
-        var server = "http://7xmw6h.com1.z0.glb.clouddn.com";
-        var url = "http://7xmw6h.com1.z0.glb.clouddn.com/55752cfd6ad11.jpeg";
-        var targetPath = cordova.file.documentsDirectory + "testImage.png";
-        console.log(cordova.file.documentsDirectory);
         // "添加附件"Event
         $scope.addAttachment = function() {
 
@@ -194,34 +189,43 @@ angular.module('starter.controllers', [])
 
         $scope.publish = function(){
 
-            //var options = new FileUploadOptions();
-            //options.fileKey = "file";
-            //options.fileName=$scope.images_list[0].substr($scope.images_list[0].lastIndexOf('/')+1);
-            //options.mimeType="image/jpeg";
-            //options.chunkedMode = true;
-            //
-            //
+
             //for(var i =0;i<$scope.images_list.length;i++){
             //    console.log($scope.images_list[i]);
             //
             //}
-            //$cordovaFileTransfer.upload("http://10.13.35.25:8080/upload", $scope.images_list[0], options)
-            //    .then(function(result) {
-            //        // Success!
-            //        console.log("Success!");
-            //    }, function(err) {
-            //        // Error
-            //        console.log("Error!");
-            //    }, function (progress) {
-            //        // constant progress updates
-            //        console.log("progress!");
-            //    });
-            $ionicLoading.show();
-            console.log($scope.newProduct);
-            Product.addNewProduct($scope.newProduct).$promise.then(function(response){
-                $ionicLoading.hide();
-                console.log(response['_id']);
-            },$rootScope.requestErrorHandler);
+
+
+
+          console.log("ddfdf"+cordova.file.tempDirectory);
+
+          for(var i = 0;i<$scope.images_list.length;i++){
+
+            blobUtil.imgSrcToDataURL($scope.images_list[i]).then(function (dataURL) {
+              // success
+              var path = $scope.images_list[0].split('/'),
+                name = path[path.length - 1],
+                base64 = dataURL.replace(/^[^,]+,/, ''),
+                file = new AV.File(name, {
+                  base64: base64
+                });
+              return file.save();
+
+            }).then(function(response){
+              console.log(response);
+            },function(err){
+              console.log(err);
+
+            });
+          }
+
+
+          //  $ionicLoading.show();
+          //  console.log($scope.newProduct);
+          //  Product.addNewProduct($scope.newProduct).$promise.then(function(response){
+          //      $ionicLoading.hide();
+          //      console.log(response['_id']);
+          //  },$rootScope.requestErrorHandler);
 
         }
     });
