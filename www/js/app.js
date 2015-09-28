@@ -6,7 +6,7 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 //var AV = require('avoscloud-sdk');
-angular.module('starter', ['ionic','ngResource','ngCordova', 'starter.services','starter.controllers', 'starter.directives'])
+angular.module('starter', ['ionic','ngResource','ngCordova', 'starter.services','starter.controllers', 'starter.directives','tabSlideBox'])
 
     .run(function($ionicPlatform) {
     AV.initialize('p9y5fh0mjtunp9hf77excmgc046kmwvx70rqplh5gmrw7gr4', 'djf0wfrsvdv2z2lxqbvpwrlivml83281q8b4gkj8w9z226rp');

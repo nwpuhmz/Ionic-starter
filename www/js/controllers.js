@@ -115,15 +115,18 @@ angular.module('starter.controllers', [])
         $scope.modal = modal;
       });
 
-     // before enter view event
-        $scope.$on('$ionicView.enter', function() {
-          // track view
-          if (!$scope.isLogin) {
-            $scope.modal.show();
-          }
-        });
+     //// before enter view event
+     //   $scope.$on('$ionicView.enter', function() {
+     //     // track view
+     //     if (!$scope.isLogin) {
+     //       $scope.modal.show();
+     //     }
+     //   });
 
-        console.log("UploadProCtrlCtrl");
+      $scope.doLogin = function(){
+        $scope.modal.hide();
+        $scope.isLogin = true;
+      }
 
 
 
