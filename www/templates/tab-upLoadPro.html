@@ -1,6 +1,22 @@
 <ion-view view-title="发布">
  <ion-content>
-     <form>
+
+   <div class="card" ng-if="!isLogin">
+     <div class="item item-text-wrap text-center" >
+       请先去登录哦.
+     </div>
+
+     <p>
+
+     <button class="button button-outline button-block button-assertive">
+       登 录
+     </button>
+
+     </p>
+   </div>
+
+
+     <form ng-if="isLogin">
      <div class="list">
          <label class="item item-input item-floating-label">
              <span class="input-label">物品名称</span>

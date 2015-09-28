@@ -106,9 +106,28 @@ angular.module('starter.controllers', [])
        });
     })
 
-    .controller('UploadProCtrl', function($scope,$cordovaImagePicker,$ionicActionSheet, $ionicLoading,$cordovaFileTransfer,$cordovaCamera,$rootScope,Product,$cordovaFile){
+    .controller('UploadProCtrl', function($scope, $state,$timeout, $ionicModal,$cordovaImagePicker,$ionicActionSheet, $ionicLoading,$cordovaCamera,$rootScope,Product){
+
+      $scope.isLogin=false;
+      $ionicModal.fromTemplateUrl('templates/Modal/showLogin.html', {
+        scope: $scope
+      }).then(function(modal) {
+        $scope.modal = modal;
+      });
+
+     // before enter view event
+        $scope.$on('$ionicView.enter', function() {
+          // track view
+          if (!$scope.isLogin) {
+            $scope.modal.show();
+          }
+        });
 
         console.log("UploadProCtrlCtrl");
+
+
+
+       /*初始化*/
         $scope.images_list = [];
         $scope.categories =[{'value':0,'label':'手机'},
             {'value':1,'label':'数码'},
@@ -118,8 +137,7 @@ angular.module('starter.controllers', [])
             title: '',
             content: '',
             category:0,
-            current_price:0,
-            old_price:0
+          product_img_url:''
         };
 
         // "添加附件"Event
@@ -157,7 +175,7 @@ angular.module('starter.controllers', [])
         var pickImage = function () {
 
             var options = {
-                maximumImagesCount: 1,
+                maximumImagesCount: 5,
                 width: 800,
                 height: 800,
                 quality: 80
@@ -168,11 +186,11 @@ angular.module('starter.controllers', [])
             $cordovaImagePicker.getPictures(options)
                 .then(function (results) {
 
-                    $scope.images_list.push(results[0]);
-                   // for (var i = 0; i < results.length; i++) {
-                   //     console.log('Image URI: ' + results[i]);
-                   //     $scope.images_list.push(results[i]);
-                   // }
+                    //$scope.images_list.push(results[0]);
+                   for (var i = 0; i < results.length; i++) {
+                        console.log('Image URI: ' + results[i]);
+                        $scope.images_list.push(results[i]);
+                   }
 
                 }, function (error) {
                     // error getting photos
@@ -190,18 +208,10 @@ angular.module('starter.controllers', [])
         $scope.publish = function(){
 
 
-            //for(var i =0;i<$scope.images_list.length;i++){
-            //    console.log($scope.images_list[i]);
-            //
-            //}
-
-
-
-          console.log("ddfdf"+cordova.file.tempDirectory);
-
+        var promises = [];
           for(var i = 0;i<$scope.images_list.length;i++){
 
-            blobUtil.imgSrcToDataURL($scope.images_list[i]).then(function (dataURL) {
+           var promise= blobUtil.imgSrcToDataURL($scope.images_list[i]).then(function (dataURL) {
               // success
               var path = $scope.images_list[0].split('/'),
                 name = path[path.length - 1],
@@ -211,21 +221,35 @@ angular.module('starter.controllers', [])
                 });
               return file.save();
 
-            }).then(function(response){
-              console.log(response);
-            },function(err){
-              console.log(err);
-
             });
+            promises.push(promise);
           }
+          Promise.all(promises).then(function(response){
+            console.log(response);
+            for(var i =0;i<response.length;i++){
+              $scope.newProduct.product_img_url+=(response[i].toJSON().url+',');
 
+            }
+            $ionicLoading.show();
+            console.log($scope.newProduct);
+            Product.addNewProduct($scope.newProduct).$promise.then(function(response){
+                $ionicLoading.hide();
+                console.log(response);
+              $timeout(function() {
+                $state.go('tab.shouye', {
+                 // id: $scope.newTopicId
+                });
+                $timeout(function() {
+                 // $scope.doRefresh();
+                }, 300);
+              }, 300);
+            });
 
-          //  $ionicLoading.show();
-          //  console.log($scope.newProduct);
-          //  Product.addNewProduct($scope.newProduct).$promise.then(function(response){
-          //      $ionicLoading.hide();
-          //      console.log(response['_id']);
-          //  },$rootScope.requestErrorHandler);
+          }).catch(function (err) {
+            console.log(err);
+            $rootScope.requestErrorHandler();
+          });
+
 
         }
     });
