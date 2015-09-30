@@ -6,7 +6,7 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 //var AV = require('avoscloud-sdk');
-angular.module('starter', ['ionic','ngResource','ngCordova', 'starter.services','starter.controllers', 'starter.directives','tabSlideBox'])
+angular.module('starter', ['ionic','ngResource','ngCordova', 'starter.config','starter.services','starter.controllers', 'starter.directives','tabSlideBox'])
 
     .run(function($ionicPlatform) {
     AV.initialize('p9y5fh0mjtunp9hf77excmgc046kmwvx70rqplh5gmrw7gr4', 'djf0wfrsvdv2z2lxqbvpwrlivml83281q8b4gkj8w9z226rp');
@@ -44,7 +44,7 @@ angular.module('starter', ['ionic','ngResource','ngCordova', 'starter.services',
             // Each tab has its own nav history stack:
 
             .state('tab.shouye', {
-                url: '/shouye',
+                url: '/products',
                 views: {
                     'tab-shouye': {
                         templateUrl: 'templates/tab-shouye.html',
@@ -52,12 +52,12 @@ angular.module('starter', ['ionic','ngResource','ngCordova', 'starter.services',
                     }
                 }
             })
-            .state('tab.news-detail', {
-                url: '/shouye/news/:newId',
+            .state('tab.product-detail', {
+                url: '/products/:id',
                 views: {
                     'tab-shouye': {
-                        templateUrl: 'templates/news-detail.html',
-                        controller: 'NewDetailCtrl'
+                        templateUrl: 'templates/product-detail.html',
+                        controller: 'productDetailCtrl'
                     }
                 }
             })

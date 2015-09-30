@@ -1,6 +1,10 @@
 /* Empty. Add your own CSS if you like */
 .app-slider {
-  height: 150px;
+  height: 500px;
+}
+.app-slider img {
+  height: 500px;
+  width: inherit;
 }
 .list-item-like {
     margin-top: 40px;

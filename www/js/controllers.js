@@ -25,15 +25,29 @@ angular.module('starter.controllers', [])
         };
     })
 
-.controller('ShouyeCtrl', function($scope,News) {
+.controller('ShouyeCtrl', function($scope,Product,$timeout) {
+    Product.fetchTopProducts();
+
+    $scope.$on('$ionicView.afterEnter' , function () {
+      $timeout(function(){
+        $scope.products = Product.getProducts();
+      },100)
+
+    });
+
+
 
   $scope.doRefresh = function() {
-    console.log("刷新了...")
+    console.log("刷新了...");
       // Stop the ion-refresher from spinning
        $scope.$broadcast('scroll.refreshComplete');
      };
 
-  $scope.news = News.all();
+    //Product.getProducts().$promise.then(function(response){
+    //  $scope.products=response;
+    //}).catch(function(err){
+    //  console.log(err);
+    //});
 
         $scope.auc_state = 'aucting';
         $scope.setAucState = function(state) {
@@ -42,9 +56,17 @@ angular.module('starter.controllers', [])
         }
 
   })
-    .controller('NewDetailCtrl', function($scope, $stateParams,News) {
+    .controller('productDetailCtrl', function($scope, $stateParams,Product) {
 
-        $scope.new = News.get($stateParams.newId);
+      $scope.product = Product.getById($stateParams.id);
+
+    //  Product.getById($stateParams.id).$promise.then(function(response){
+    //
+    //    $scope.product=response;
+    //
+    //  }).catch(function(err){
+    //    console.log(err);
+    //  });
     })
 
 

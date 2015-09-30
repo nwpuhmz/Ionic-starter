@@ -7,13 +7,13 @@
       <div class="app-slider">
        <ion-slide-box on-slide-changed="slideHasChanged($index)">
         <ion-slide>
-            <img src="http://pic20.nipic.com/20120414/9502787_015323910000_2.jpg" class="full-image">
+            <img src="http://img3.imgtn.bdimg.com/it/u=3280521816,3207985159&fm=21&gp=0.jpg" class="full-image">
         </ion-slide>
         <ion-slide>
-            <img src="http://pic20.nipic.com/20120414/9502787_015323910000_2.jpg" class="full-image">
+            <img src="http://img3.imgtn.bdimg.com/it/u=3280521816,3207985159&fm=21&gp=0.jpg" class="full-image">
         </ion-slide>
         <ion-slide>
-            <img src="http://pic20.nipic.com/20120414/9502787_015323910000_2.jpg" class="full-image">
+            <img src="http://img3.imgtn.bdimg.com/it/u=3280521816,3207985159&fm=21&gp=0.jpg" class="full-image">
         </ion-slide>
     </ion-slide-box>
     </div>
@@ -36,24 +36,20 @@
           </div>
       </div>
 
-              <div class="list card" ng-repeat="new in news" >
+              <div class="list card" ng-repeat="product in products" >
                   <div class="item item-avatar">
-                      <img ng-src="{{new.avatar}}">
-                      <h2>{{new.title}}</h2>
+                      <img ng-src="{{product.product_img_url}}">
+                      <h2>{{product.title}}</h2>
 
                       <p>
-                          <!--<button class="button button-small  button-assertive">-->
-                              <!--<i class="icon ion-clock"></i> 距结束:{{new.createTime}}-->
-                          <!--</button>-->
-                            ￥100
-
+                         {{product.current_price}}
                       </p>
 
                   </div>
 
                   <div class="item item-body" >
-                      <a href="#/tab/shouye/news/{{new.id}}">
-                          <img ng-src="{{new.firstImg}}" class="full-image">
+                      <a href="#/tab/products/{{product._id}}">
+                          <img ng-src="{{product.product_img_url}}" class="full-image">
                       </a>
 
                   </div>
@@ -76,7 +72,7 @@
 
 
 
-
+    <ion-infinite-scroll on-infinite="loadMore()" distance="1%" ng-if="moreDataCanBeLoaded()"></ion-infinite-scroll>
 
   </ion-content>
 </ion-view>

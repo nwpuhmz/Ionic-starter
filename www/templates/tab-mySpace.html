@@ -4,6 +4,11 @@
     </a>
   </ion-nav-buttons>
   <ion-content>
+    <ion-refresher
+      pulling-text="松开立即刷新..."
+      on-refresh="doRefresh()">
+    </ion-refresher>
+
     <div class="myProfile-title">
         <div class="row">
           <div class="col col-10"><img src="http://www.qq2013.org/uploads/allimg/140223/1641195108-7.jpg" /></div>
