@@ -109,7 +109,7 @@ angular.module('starter', ['ionic','ngResource','ngCordova', 'starter.config','s
         ;
 
         // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/tab/shouye');
+        $urlRouterProvider.otherwise('/tab/products');
 
     });
 

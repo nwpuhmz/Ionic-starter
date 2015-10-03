@@ -1,6 +1,7 @@
 angular.module('starter.controllers', [])
 
 .controller('AppCtrl',function($rootScope){
+
         //error handler
         var errorMsg = {
             0: '网络出错啦，请再试一下',
@@ -25,7 +26,7 @@ angular.module('starter.controllers', [])
         };
     })
 
-.controller('ShouyeCtrl', function($scope,Product,$timeout) {
+.controller('ShouyeCtrl', function($scope,Product,$timeout,$rootScope) {
     Product.fetchTopProducts();
 
     $scope.$on('$ionicView.afterEnter' , function () {
@@ -39,16 +40,47 @@ angular.module('starter.controllers', [])
 
   $scope.doRefresh = function() {
     console.log("刷新了...");
+    Product.refresh().then(function(response){
+      console.log(response);
+      $scope.products = response;
+      $scope.hasNextPage = true;
+      $scope.loadError = false;
+    }).catch(function(err){
+      $rootScope.requestErrorHandler({
+        noBackdrop: true
+      }, function() {
+        $scope.loadError = true;
+      })
+    }).finally(function(){
       // Stop the ion-refresher from spinning
-       $scope.$broadcast('scroll.refreshComplete');
-     };
+      $scope.$broadcast('scroll.refreshComplete');
+    });
+  };
 
-    //Product.getProducts().$promise.then(function(response){
-    //  $scope.products=response;
-    //}).catch(function(err){
-    //  console.log(err);
-    //});
+   $scope.loadMore = function() {
+        console.log('load more...');
+     Product.pagination().then(function(response){
+        console.log('load more complete');
+       $scope.hasNextPage = false;
+       $scope.loadError = false;
+       $timeout(function(){
+         $scope.hasNextPage = Product.hasNextPage();
+       },100);
+       $scope.products = $scope.products.concat(response);
 
+     }).catch(function(err){
+       $rootScope.requestErrorHandler({
+         noBackdrop: true
+       }, function() {
+         $scope.loadError = true;
+       })
+     }).finally(function(){
+       // Stop the ion-refresher from spinning
+       $scope.$broadcast('scroll.infiniteScrollComplete');
+     });
+
+
+   };
         $scope.auc_state = 'aucting';
         $scope.setAucState = function(state) {
 
