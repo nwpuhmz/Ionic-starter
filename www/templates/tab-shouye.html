@@ -1,79 +1,1 @@
-<ion-view view-title="首页" hide-nav-bar="true">
-  <ion-content >
-  <ion-refresher
-    ng-if = "!loadError"
-    pulling-text="松开立即刷新..."
-    on-refresh="doRefresh()">
-  </ion-refresher>
-      <div class="app-slider">
-       <ion-slide-box on-slide-changed="slideHasChanged($index)">
-        <ion-slide>
-            <img src="http://img3.imgtn.bdimg.com/it/u=3280521816,3207985159&fm=21&gp=0.jpg" class="full-image">
-        </ion-slide>
-        <ion-slide>
-            <img src="http://img3.imgtn.bdimg.com/it/u=3280521816,3207985159&fm=21&gp=0.jpg" class="full-image">
-        </ion-slide>
-        <ion-slide>
-            <img src="http://img3.imgtn.bdimg.com/it/u=3280521816,3207985159&fm=21&gp=0.jpg" class="full-image">
-        </ion-slide>
-    </ion-slide-box>
-    </div>
-
-      <!--<button class="button button-light button-android" ng-class="{ 'button\-positive': demo == 'ios' }" ng-click="setPlatform('ios')">-->
-          <!--iOS-->
-      <!--</button>-->
-      <!--<button class="button button-light button-android" ng-class="{ 'button\-positive': demo == 'android' }" ng-click="setPlatform('android')">-->
-          <!--Android-->
-      <!--</button>-->
-
-      <div class="row">
-          <div class="button-bar">
-              <a class="button button-light " ng-class="{ 'button\-positive': auc_state == 'aucting' }" ng-click="setAucState('aucting')">
-                  正在热卖
-              </a>
-              <a class="button button-light " ng-class="{ 'button\-positive': auc_state == 'over' }" ng-click="setAucState('over')">
-                  已结束
-              </a>
-          </div>
-      </div>
-
-              <div class="list card" ng-repeat="product in products" >
-                  <div class="item item-avatar">
-                      <img ng-src="{{product.product_img_url}}">
-                      <h2>{{product.title}}</h2>
-
-                      <p>
-                         {{product.current_price}}
-                      </p>
-
-                  </div>
-
-                  <div class="item item-body" >
-                      <a href="#/tab/products/{{product._id}}">
-                          <img ng-src="{{product.product_img_url}}" class="full-image">
-                      </a>
-
-                  </div>
-
-                  <div class="item tabs tabs-secondary tabs-icon-left">
-                      <a class="tab-item" href="#">
-                          <i class="icon ion-ios-heart"></i>
-                          1 人喜欢
-                      </a>
-                      <a class="tab-item" href="#">
-                          <i class="icon ion-chatbox"></i>
-                          10 条评论
-                      </a>
-                      <a class="tab-item" href="#">
-                          <i class="icon ion-thumbsup"></i>
-                          10 次出价
-                      </a>
-                  </div>
-              </div>
-
-
-
-    <ion-infinite-scroll on-infinite="loadMore()" distance="10%" ng-if="hasNextPage && !loadError"></ion-infinite-scroll>
-
-  </ion-content>
-</ion-view>
+<ion-view view-title="首页" hide-nav-bar="true">  <ion-content >  <ion-refresher    ng-if = "!loadError"    pulling-text="松开立即刷新..."    on-refresh="doRefresh()">  </ion-refresher>      <div class="app-slider">       <ion-slide-box on-slide-changed="slideHasChanged($index)">        <ion-slide>            <img src="http://img3.imgtn.bdimg.com/it/u=3280521816,3207985159&fm=21&gp=0.jpg" class="full-image">        </ion-slide>        <ion-slide>            <img src="http://img3.imgtn.bdimg.com/it/u=3280521816,3207985159&fm=21&gp=0.jpg" class="full-image">        </ion-slide>        <ion-slide>            <img src="http://img3.imgtn.bdimg.com/it/u=3280521816,3207985159&fm=21&gp=0.jpg" class="full-image">        </ion-slide>    </ion-slide-box>    </div>      <!--<button class="button button-light button-android" ng-class="{ 'button\-positive': demo == 'ios' }" ng-click="setPlatform('ios')">-->          <!--iOS-->      <!--</button>-->      <!--<button class="button button-light button-android" ng-class="{ 'button\-positive': demo == 'android' }" ng-click="setPlatform('android')">-->          <!--Android-->      <!--</button>-->      <div class="row">          <div class="button-bar">              <a class="button button-light " ng-class="{ 'button\-positive': auc_state == 'aucting' }" ng-click="setAucState('aucting')">                  正在热卖              </a>              <a class="button button-light " ng-class="{ 'button\-positive': auc_state == 'over' }" ng-click="setAucState('over')">                  已结束              </a>          </div>      </div>              <div class="list card" ng-repeat="product in products" >                  <div class="item item-avatar">                      <img ng-src="{{product.product_img_url}}">                      <h2>{{product.title}}</h2>                      <p>                         {{product.current_price}}                      </p>                  </div>                  <div class="item item-body" >                      <a href="#/tab/products/{{product._id}}">                          <img ng-src="{{product.product_img_url}}" class="full-image">                      </a>                  </div>                  <div class="item tabs tabs-secondary tabs-icon-left">                      <a class="tab-item" href="#">                          <i class="icon ion-ios-heart"></i>                          1 人喜欢                      </a>                      <a class="tab-item" href="#">                          <i class="icon ion-chatbox"></i>                          10 条评论                      </a>                      <a class="tab-item" href="#">                          <i class="icon ion-thumbsup"></i>                          10 次出价                      </a>                  </div>              </div>    <ion-infinite-scroll on-infinite="loadMore()" distance="10%" ng-if="hasNextPage && !loadError"></ion-infinite-scroll>  </ion-content></ion-view>
