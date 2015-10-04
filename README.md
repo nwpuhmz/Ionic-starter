@@ -8,4 +8,4 @@ My first Ionic demo
 4. upload image to server
 
 //TO-DO
-4. IM
+5. IM
