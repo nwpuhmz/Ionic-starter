@@ -84,21 +84,38 @@
 
 
     </div>
-    <div class="list">
-      <a class="item"><span>评论 10</span></a>
-      <a class="item item-avatar" href="#">
+    <ion-item class="item-loading" ng-if="replies == undefined">
+        <span ng-if="!loadError">
+          加载中...
+        </span>
+        <span ng-if="loadError">
+          加载失败
+        </span>
+    </ion-item>
+    <ion-item ng-if="replies.length == 0">
+      暂无评论
+    </ion-item>
+
+    <a class="item"><span>评论 {{replies.length}}</span></a>
+    <div class="list" ng-repeat=" reply in replies">
+
+      <a class="item item-avatar" ng-click="showActions(reply)">
         <img src="http://pic20.nipic.com/20120414/9502787_015323910000_2.jpg">
         <h2>Venkman</h2>
         <h3>2015-8-8</h3>
-        <p>Back off, man. I'm a scientist.</p>
-      </a>
-      <a class="item item-avatar" href="#">
-        <img src="http://pic20.nipic.com/20120414/9502787_015323910000_2.jpg">
-        <h2>Venkmanfdfddfdfdfdfdfdfdfdfdf</h2>
-        <p>2015-8-8</p>
-        <p>Back off, man. I'm a scientist.aaaaaaaaaaaaasdfdsfsafdasdfasfdsadfsafdsafdsafdsa</p>
+        <p>{{reply.content}}</p>
       </a>
 
     </div>
+
+    <ion-footer-bar align-title="left" class="bar-light " keyboard-attach>
+      <label class="item-input-wrapper">
+        <input type="text" placeholder="回复" ng-model="replyData.content" ng-disabled="false">
+      </label>
+      <button class="button button-small button-clear button-positive" ng-click="saveReply()" ng-class="{'disabled':false}">
+        提交
+      </button>
+    </ion-footer-bar>
+
   </ion-content>
 </ion-view>

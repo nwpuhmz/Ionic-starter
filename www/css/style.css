@@ -28,3 +28,7 @@
   font-size: medium;
   color: #ffffff;
 }
+.item-loading {
+  text-align: center;
+  color: #aaa;
+}

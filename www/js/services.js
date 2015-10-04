@@ -1,8 +1,8 @@
 angular.module('starter.services',[])
 
 
-    .factory('Product', ['$resource', function($resource,ENV){
-        console.log("in product service");
+    .factory('Products', ['$resource', function($resource,ENV){
+        console.log("in products service");
     var APIUrl = 'http://localhost:7000/'+'product/:id';
      //存储从服务器拉取的数据
     var products =[];
@@ -70,26 +70,84 @@ angular.module('starter.services',[])
                 });
             },
           //不用每次都从服务器拉取数据
-            getProducts: function(){
+            getProducts: function() {
               return products;
             },
             getById: function(id) {
-              //return resource.get({
-              //  id: id
-              //}, function(response) {
-              //
-              //});
-              console.log(products[0]._id);
 
               if(!!products){
+
                   for(var i =0;i<products.length;i++){
                     if(products[i]._id === id)
+                    {
                       return products[i];
+
+                    }
+
                   }
               }else
               return null;
+
             }
 
         }
 
-    }]);
+    }])
+  .factory('Product', ['$resource', function($resource,ENV){
+    console.log("in product service");
+    var APIUrl = 'http://localhost:7000/'+'product/:id';
+    //存储从服务器拉取的数据
+    var product;
+    var resource =  $resource(APIUrl, {
+        id: '@id'
+      },{
+
+          reply: {
+            method: 'post',
+            url: APIUrl+'/replies'
+          },
+
+          query:{
+            method: 'get',
+            url: APIUrl+'/replies',
+            isArray: true,
+            timeout:20000
+          }
+
+      }
+    );
+
+    return{
+      getById: function(id) {
+
+        if(product !== undefined && product.id === id){
+
+              return new Promise(function(resolve,reject){
+                resolve(product);
+              });
+        }
+        return this.get(id);
+      },
+
+      get: function(id) {
+        return resource.get({id:id},function(response){
+
+        });
+      },
+
+      saveReply: function(product_id,replyData) {
+        return resource.reply({
+          id:product_id
+        },replyData);
+
+
+      },
+      getReplies: function (id) {
+        return resource.query({id:id}, function (response) {
+
+        });
+      }
+    }
+
+  }])
+  ;

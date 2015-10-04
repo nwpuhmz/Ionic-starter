@@ -10,8 +10,8 @@ angular.module('starter.controllers', [])
         $rootScope.requestErrorHandler = function(options, callback) {
             return function(response) {
                 var error;
-                if (response.data && response.data.message) {
-                    error = errorMsg[response.data.message];
+                if (response && responsemessage) {
+                    error = errorMsg[response.message];
                 } else {
                     error = errorMsg[response.status] || 'Error: ' + response.status + ' ' + response.statusText;
                 }
@@ -26,12 +26,12 @@ angular.module('starter.controllers', [])
         };
     })
 
-.controller('ShouyeCtrl', function($scope,Product,$timeout,$rootScope) {
-    Product.fetchTopProducts();
+.controller('ShouyeCtrl', function($scope,Products,$timeout,$rootScope) {
+    Products.fetchTopProducts();
 
     $scope.$on('$ionicView.afterEnter' , function () {
       $timeout(function(){
-        $scope.products = Product.getProducts();
+        $scope.products = Products.getProducts();
       },100)
 
     });
@@ -40,7 +40,7 @@ angular.module('starter.controllers', [])
 
   $scope.doRefresh = function() {
     console.log("刷新了...");
-    Product.refresh().then(function(response){
+    Products.refresh().then(function(response){
       console.log(response);
       $scope.products = response;
       $scope.hasNextPage = true;
@@ -59,12 +59,12 @@ angular.module('starter.controllers', [])
 
    $scope.loadMore = function() {
         console.log('load more...');
-     Product.pagination().then(function(response){
+     Products.pagination().then(function(response){
         console.log('load more complete');
        $scope.hasNextPage = false;
        $scope.loadError = false;
        $timeout(function(){
-         $scope.hasNextPage = Product.hasNextPage();
+         $scope.hasNextPage = Products.hasNextPage();
        },100);
        $scope.products = $scope.products.concat(response);
 
@@ -88,17 +88,90 @@ angular.module('starter.controllers', [])
         }
 
   })
-    .controller('productDetailCtrl', function($scope, $stateParams,Product) {
+    .controller('productDetailCtrl', function($scope,$rootScope, $stateParams,$ionicLoading,Products,Product) {
+      var id = $stateParams.id;
+    //先用 Products service 调用缓存数组里面的数据
+      $scope.product = Products.getById(id);
 
-      $scope.product = Product.getById($stateParams.id);
+    //load product
+    $scope.loadProduct = function(reload){
+     var productResource;
+      if(reload === true)
+        productResource = Product.get(id);
+      else
+        productResource = Product.getById(id);
 
-    //  Product.getById($stateParams.id).$promise.then(function(response){
-    //
-    //    $scope.product=response;
-    //
-    //  }).catch(function(err){
-    //    console.log(err);
-    //  });
+      return productResource.$promise.then(function(response){
+        $scope.product = response;
+      }).catch(function(err){
+        $rootScope.requestErrorHandler({
+          noBackdrop: true
+        }, function() {
+          $scope.loadError = true;
+        });
+      });
+    };
+
+    //暂且先注释掉
+    //$scope.loadProduct();
+
+    $scope.doRefresh = function() {
+      var promises = [];
+      var promise_product = $scope.loadProduct(true).then();
+      var promise_replies = Product.getReplies(id).$promise.then(function (response) {
+        $scope.replies = response;
+      });
+      promises.push(promise_product);
+      promises.push(promise_replies);
+
+      return Promise.all(promises).then(function(response) {
+        console.log('do refresh complete');
+        $scope.$broadcast('scroll.refreshComplete');
+      },function(err){
+        console.log(err);
+        $rootScope.requestErrorHandler();
+        $scope.$broadcast('scroll.refreshComplete');
+      });
+      //return  $scope.loadProduct(true).then(function(response) {
+      //  console.log('do refresh complete');
+      //}, function() {
+      //}).finally(function() {
+      //  $scope.$broadcast('scroll.refreshComplete');
+      //});
+    };
+
+    //load replies
+    Product.getReplies(id).$promise.then(function (response) {
+      $scope.replies = response;
+    });
+
+
+    //save reply
+    $scope.replyData = {
+      content: '',
+      product_id:id
+    };
+
+    $scope.saveReply = function () {
+      $ionicLoading.show();
+      Product.saveReply(id,$scope.replyData).$promise.then(function (response) {
+      $ionicLoading.hide();
+        $scope.replyData.content = '';
+        $scope.loadProduct(true).then(function () {
+          Product.getReplies(id).$promise.then(function (response) {
+            $scope.replies = response;
+          });
+        }).catch(function () {
+          $rootScope.requestErrorHandler;
+        });
+      });
+     }
+
+    $scope.showActions = function (reply) {
+      var replyContent = '@'+'hmz';
+      $scope.replyData.content = replyContent+' ';
+
+    }
     })
 
 
@@ -160,7 +233,7 @@ angular.module('starter.controllers', [])
        });
     })
 
-    .controller('UploadProCtrl', function($scope, $state,$timeout, $ionicModal,$cordovaImagePicker,$ionicActionSheet, $ionicLoading,$cordovaCamera,$rootScope,Product){
+    .controller('UploadProCtrl', function($scope, $state,$timeout, $ionicModal,$cordovaImagePicker,$ionicActionSheet, $ionicLoading,$cordovaCamera,$rootScope,Products){
 
       $scope.isLogin=false;
       $ionicModal.fromTemplateUrl('templates/Modal/showLogin.html', {
@@ -284,12 +357,12 @@ angular.module('starter.controllers', [])
           Promise.all(promises).then(function(response){
             console.log(response);
             for(var i =0;i<response.length;i++){
-              $scope.newProduct.product_img_url+=(response[i].toJSON().url+',');
-
+             // $scope.newProduct.product_img_url+=(response[i].toJSON().url+',');
+              $scope.newProduct.product_img_url.push(response[i].toJSON().url);
             }
             $ionicLoading.show();
             console.log($scope.newProduct);
-            Product.addNewProduct($scope.newProduct).$promise.then(function(response){
+            Products.addNewProduct($scope.newProduct).$promise.then(function(response){
                 $ionicLoading.hide();
                 console.log(response);
               $timeout(function() {
